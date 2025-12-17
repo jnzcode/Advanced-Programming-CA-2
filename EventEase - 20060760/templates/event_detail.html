@@ -1,0 +1,70 @@
+{% extends "layout.html" %}
+{% block title %}{{ event['title'] }} - EventEase{% endblock %}
+
+{% block content %}
+
+<div class="event-detail-wrapper">
+
+    <div class="event-detail-card">
+
+        <!-- IMAGE and CATEGORY -->
+        {% if event['image_url'] %}
+        <div class="event-detail-img">
+            <img src="{{ event['image_url'] }}" alt="Event Image">
+            <span class="event-detail-tag">{{ event['category'] }}</span>
+        </div>
+        {% endif %}
+
+        <!-- TITLE -->
+        <h1 class="event-detail-title">{{ event['title'] }}</h1>
+
+        <div class="event-meta">
+            <div class="meta-item">⏱ <span>{{ event['date_time'] }}</span></div>
+            <div class="meta-item">📍 <span>{{ event['location'] or 'TBA' }}</span></div>
+        </div>
+
+        <!-- DESCRIPTION -->
+        <div class="event-detail-desc">
+            {{ event['description'] or 'No description provided.' }}
+        </div>
+
+        <!-- SEATS INFO -->
+        <div class="event-seats-grid">
+            <div class="seat-box">
+                <span>Total Seats</span>
+                <strong>{{ event['seats_total'] }}</strong>
+            </div>
+            <div class="seat-box">
+                <span>Seats Taken</span>
+                <strong>{{ event['seats_taken'] }}</strong>
+            </div>
+            <div class="seat-box highlight">
+                <span>Seats Left</span>
+                <strong>{{ seats_left }}</strong>
+            </div>
+        </div>
+
+        <!-- CTA -->
+        {% if user %}
+            <form method="post" action="{{ url_for('register_event', event_id=event['id']) }}">
+                <button type="submit"
+                        class="event-register-btn"
+                        {% if seats_left <= 0 %}disabled{% endif %}>
+                    {% if seats_left > 0 %}
+                         Register Now
+                    {% else %}
+                        Event Full
+                    {% endif %}
+                </button>
+            </form>
+        {% else %}
+            <p class="event-login-note">
+                 <a href="{{ url_for('login') }}">Log in</a> to register for this event.
+            </p>
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

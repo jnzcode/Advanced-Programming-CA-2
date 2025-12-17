@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+{% block title %}My Profile - EventEase{% endblock %}
+
+{% block content %}
+
+<div class="profile-wrapper">
+
+    <div class="profile-card premium-profile">
+
+        <!-- Profile Icon -->
+        <div class="profile-avatar">
+            <span>👤</span>
+        </div>
+
+        <h2 class="profile-title">My Profile</h2>
+
+        <div class="profile-section">
+            <p class="profile-label">Name:</p>
+            <p class="profile-value highlight">{{ user['name'] }}</p>
+        </div>
+
+        <div class="profile-section">
+            <p class="profile-label">Email:</p>
+            <p class="profile-value">{{ user['email'] }}</p>
+        </div>
+
+        <div class="profile-section">
+            <p class="profile-label">Admin:</p>
+            <p class="profile-value status {{ 'green' if user['is_admin'] == 1 else 'red' }}">
+                {{ "Yes" if user['is_admin'] == 1 else "No" }}
+            </p>
+        </div>
+
+        <div class="profile-section">
+            <p class="profile-label">Events Registered:</p>
+            <p class="profile-value number">{{ reg_count }}</p>
+        </div>
+
+        <hr class="profile-divider">
+
+        <a class="profile-link premium-link" href="{{ url_for('my_registrations') }}">
+            View My Event Registrations →
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

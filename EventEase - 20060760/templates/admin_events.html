@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+{% block title %}Admin - Manage Events{% endblock %}
+
+{% block content %}
+
+<div class="admin-wrapper">
+
+    <h1 class="admin-title">Admin Dashboard — Manage Events</h1>
+
+    <a class="btn-create" href="{{ url_for('admin_create_event') }}">
+        + Create New Event
+    </a>
+
+    {% if events %}
+        <div class="admin-table-container">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Date & Time</th>
+                        <th>Location</th>
+                        <th>Seats</th>
+                        <th style="text-align:center;">Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                {% for e in events %}
+                    <tr>
+                        <td>{{ e['title'] }}</td>
+                        <td>{{ e['date_time'] }}</td>
+                        <td>{{ e['location'] }}</td>
+                        <td>{{ e['seats_taken'] }}/{{ e['seats_total'] }}</td>
+
+                        <td class="action-col">
+
+                            <a class="action-btn edit" 
+                               href="{{ url_for('admin_edit_event', event_id=e['id']) }}">
+                               ✏ Edit
+                            </a>
+
+                            <form method="post"
+                                  action="{{ url_for('admin_delete_event', event_id=e['id']) }}"
+                                  onsubmit="return confirm('Are you sure you want to delete this event?');">
+                                <button class="action-btn delete" type="submit"> Delete</button>
+                            </form>
+
+                            <a class="action-btn view"
+                               href="{{ url_for('event_detail', event_id=e['id']) }}">
+                                View
+                            </a>
+
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+
+    {% else %}
+        <p class="no-events">No events available.</p>
+    {% endif %}
+
+</div>
+
+{% endblock %}

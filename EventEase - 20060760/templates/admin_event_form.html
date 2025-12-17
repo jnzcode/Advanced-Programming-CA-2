@@ -1,0 +1,74 @@
+{% extends "layout.html" %}
+
+{% if event %}
+    {% set page_title = "Edit Event" %}
+{% else %}
+    {% set page_title = "Create Event" %}
+{% endif %}
+
+{% block title %}{{ page_title }} - EventEase{% endblock %}
+
+{% block content %}
+
+<div class="admin-form-wrapper">
+    <div class="admin-form-card">
+        
+        <h1 class="admin-form-title">{{ page_title }}</h1>
+
+        <form method="post" class="premium-admin-form">
+
+            <div class="input-group">
+                <label>Title</label>
+                <input type="text" name="title" required 
+                       value="{{ event['title'] if event else '' }}">
+            </div>
+
+            <div class="input-group">
+                <label>Description</label>
+                <textarea name="description" rows="4">{{ event['description'] if event else '' }}</textarea>
+            </div>
+
+            <div class="input-group">
+                <label>Image URL</label>
+                <input type="text" name="image_url" placeholder="Paste image link here"
+                       value="{{ event.image_url if event else '' }}">
+            </div>
+
+            <div class="input-group">
+                <label>Location</label>
+                <input type="text" name="location" 
+                       value="{{ event['location'] if event else '' }}">
+            </div>
+
+            <div class="input-group">
+                <label>Category</label>
+                <select name="category" required>
+                    <option value="Workshop" {% if event and event['category'] == "Workshop" %}selected{% endif %}>Workshop</option>
+                    <option value="Seminar" {% if event and event['category'] == "Seminar" %}selected{% endif %}>Seminar</option>
+                    <option value="Sports" {% if event and event['category'] == "Sports" %}selected{% endif %}>Sports</option>
+                    <option value="Cultural" {% if event and event['category'] == "Cultural" %}selected{% endif %}>Cultural</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label>Date & Time</label>
+                <input type="text" name="date_time"
+                       placeholder="e.g. 2025-12-10 18:00"
+                       value="{{ event['date_time'] if event else '' }}" required>
+            </div>
+
+            <div class="input-group">
+                <label>Total Seats</label>
+                <input type="number" name="seats_total" min="1"
+                       value="{{ event['seats_total'] if event else '10' }}" required>
+            </div>
+
+            <button type="submit" class="admin-save-btn">Save Event</button>
+        </form>
+
+        <a href="{{ url_for('admin_events') }}" class="admin-back-link">← Back to Events</a>
+
+    </div>
+</div>
+
+{% endblock %}

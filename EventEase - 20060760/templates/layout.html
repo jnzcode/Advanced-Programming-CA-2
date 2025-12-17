@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}EventEase{% endblock %}</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" 
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+
+    <div class="global-bg"></div>
+   <div class="global-bg-overlay"></div>
+
+
+    <nav class="navbar">
+
+        <!-- Logo -->
+        <a href="{{ url_for('index') }}" class="logo">EventEase</a>
+
+        <!-- Search Bar -->
+        <form action="{{ url_for('search') }}" method="get">
+            <input type="text" name="q" placeholder="Search events..." required>
+            <button type="submit">Search</button>
+        </form>
+
+        <!-- Right side links -->
+        <div class="nav-right">
+            {% if user %}
+
+                <a href="{{ url_for('my_registrations') }}">My Registrations</a>
+                <a href="{{ url_for('profile') }}">My Profile</a>
+
+                {% if user['is_admin'] == 1 %}
+                    <a href="{{ url_for('admin_events') }}">Admin Panel</a>
+                {% endif %}
+
+                <a href="{{ url_for('logout') }}" style="color:#ff7979;">Logout</a>
+
+            {% else %}
+
+                <a href="{{ url_for('login') }}">Login</a>
+                <a href="{{ url_for('register') }}">Sign Up</a>
+
+            {% endif %}
+        </div>
+
+    </nav>
+
+    <!-- FLASH MESSAGES -->
+    <div class="flash-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash flash-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>© <span id="year"></span> EventEase | All Rights Reserved</p>
+
+            <div class="footer-social">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+{% block title %}My Registrations - EventEase{% endblock %}
+
+{% block content %}
+
+<div class="reg-wrapper premium-reg-wrapper">
+
+    <h1 class="reg-title premium-reg-title">My Event Registrations</h1>
+
+    {% if registrations %}
+    
+    <div class="reg-container premium-reg-container">
+
+        {% for r in registrations %}
+        <div class="reg-card premium-reg-card">
+
+            <div class="reg-card-header">
+                <h2 class="reg-event-title premium-reg-event-title">{{ r['title'] }}</h2>
+                <span class="reg-status-dot"></span>
+            </div>
+
+            <div class="reg-info-block">
+                <p class="reg-info">
+                    <span class="reg-label"> Date & Time:</span> 
+                    {{ r['date_time'] }}
+                </p>
+
+                <p class="reg-info">
+                    <span class="reg-label"> Location:</span> 
+                    {{ r['location'] or 'TBA' }}
+                </p>
+
+                <p class="reg-info">
+                    <span class="reg-label"> Registered At:</span> 
+                    {{ r['created_at'] }}
+                </p>
+            </div>
+
+        </div>
+        {% endfor %}
+
+    </div>
+
+    {% else %}
+        <p class="no-events premium-no-events"> You have not registered for any events yet.</p>
+    {% endif %}
+</div>
+
+{% endblock %}

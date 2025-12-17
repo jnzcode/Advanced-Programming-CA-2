@@ -1,0 +1,125 @@
+{% extends "layout.html" %}
+{% block title %}Home - EventEase{% endblock %}
+
+{% block content %}
+
+<div class="homepage-wrapper">
+
+    <section class="homepage-hero">
+        <h1 class="hero-title">Welcome to <span>EventEase</span></h1>
+        <p class="hero-sub">Discover, register & explore campus events effortlessly.</p>
+        <a href="#events" class="hero-cta">Browse Events</a>
+    </section>
+
+    <div class="glass-section premium-about">
+        <h2> About EventEase</h2>
+        <p>
+            EventEase is your smart event companion — bringing together workshops, seminars,
+            sports, and cultural activities in a single beautiful interface.
+        </p>
+    </div>
+
+    <div class="glass-section premium-features">
+        <h2> Why Choose EventEase?</h2>
+
+        <div class="features-grid">
+            <div class="feature-item">✔ One-click Event Registration</div>
+            <div class="feature-item">✔ Smart Admin Dashboard</div>
+            <div class="feature-item">✔ Search & Category Filters</div>
+            <div class="feature-item">✔ Track Your Registrations</div>
+            <div class="feature-item">✔ Modern Futuristic UI</div>
+            <div class="feature-item">✔ Event Images & Descriptions</div>
+        </div>
+    </div>
+
+    <hr class="divider">
+
+    <!--  UPCOMING EVENTS HEADER -->
+    <section id="events" class="events-header-future">
+        <h1>Upcoming <span>Events</span></h1>
+        <p>Stay updated with workshops, cultural shows, sports events, seminars & more.</p>
+    </section>
+
+    <!-- FILTER BAR -->
+    <div class="future-filter-bar">
+        <form method="get" action="{{ url_for('index') }}" class="future-filter-form">
+
+            <select name="category" class="future-select">
+                <option value="">All Categories</option>
+                <option value="Workshop">Workshop</option>
+                <option value="Seminar">Seminar</option>
+                <option value="Sports">Sports</option>
+                <option value="Cultural">Cultural</option>
+            </select>
+
+            <button type="submit" class="future-filter-btn">Filter</button>
+        </form>
+    </div>
+
+    <!--EVENT CARDS -->
+    {% if events %}
+    <div class="future-event-grid">
+
+        {% for event in events %}
+        <div class="future-card">
+
+            {% if event['image_url'] %}
+            <div class="future-card-img">
+                <img src="{{ event['image_url'] }}" alt="Event Image">
+                <span class="future-tag">{{ event['category'] }}</span>
+            </div>
+            {% endif %}
+
+            <div class="future-card-body">
+                <h3 class="future-card-title">{{ event['title'] }}</h3>
+
+                <p class="future-info">⏱ {{ event['date_time'] }}</p>
+                <p class="future-info">📍 {{ event['location'] or 'TBA' }}</p>
+
+                <p class="future-desc">
+                    {{ event['description'][:110] if event['description'] else 'No description.' }}...
+                </p>
+
+                <a href="{{ url_for('event_detail', event_id=event['id']) }}" class="future-btn">
+                    View Details →
+                </a>
+            </div>
+
+        </div>
+        {% endfor %}
+
+    </div>
+    {% else %}
+    <p class="no-events">No events added yet.</p>
+    {% endif %}
+
+ <div class="contact-premium">
+
+    <div class="contact-icon"></div>
+
+    <h2 class="contact-title">Contact Us</h2>
+
+    <div class="contact-details">
+
+        <p>
+            <span class="contact-label"> Email:</span> 
+            support@eventease.com
+        </p>
+
+        <p>
+            <span class="contact-label"> Phone:</span> 
+            +353 123 456 789
+        </p>
+
+        <p>
+            <span class="contact-label"> Location:</span>
+            Dublin, Ireland
+        </p>
+    </div>
+
+</div>
+
+
+</div>
+
+{% endblock %}
